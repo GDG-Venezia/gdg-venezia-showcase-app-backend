@@ -1,0 +1,50 @@
+openapi: 3.0.1
+info:
+  title: GDG Venezia Showcase App
+  description: 'GDG Venezia Showcase App APIs'
+  contact:
+    email: veneziagdg@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: TODO
+- url: TODO
+tags:
+- name: events
+  description: Everything about events
+- name: photos
+  description: Everything about photos
+- name: contacts
+  description: Everything about social and contacts
+paths:
+  /events:
+    get:
+      tags:
+      - events
+      summary: Get all events (future and past)
+      operationId: getEvents
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+
+components:
+  schemas:
+    Event:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date-time
+
