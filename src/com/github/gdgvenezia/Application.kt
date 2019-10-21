@@ -1,5 +1,6 @@
 package com.github.gdgvenezia
 
+import com.github.gdgvenezia.meetup.MeetupClientImpl
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
@@ -8,16 +9,40 @@ import io.ktor.http.*
 import io.ktor.features.*
 import org.slf4j.event.*
 import io.ktor.auth.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.features.json.JacksonSerializer
+import io.ktor.client.features.json.JsonFeature
 //import io.ktor.client.features.auth.basic.*
 import io.ktor.gson.*
 
+
+/**
+ * Main
+ */
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
 
-    val repository: Repository = RepositoryMock()
+    /**
+     * Client setup
+     * 1. specifying an engine, for example Apache, OkHttp, Android, Ios, Js, Jetty, CIO or Mock
+     * 2. configure a Json Serializer
+     */
+    val httpClient: HttpClient by lazy {
+        HttpClient(OkHttp) {
+            install(JsonFeature) {
+                serializer = JacksonSerializer()
+            }
+
+        }
+    }
+
+    val meetupClient = MeetupClientImpl(httpClient)
+
+    val repository: Repository = RepositoryImpl(meetupClient)
 
     install(CallLogging) {
         level = Level.INFO
@@ -42,7 +67,7 @@ fun Application.module(testing: Boolean = false) {
 
     routing {
         get("/") {
-            call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
+            call.respondText("HELLO GDG VENEZIA!", contentType = ContentType.Text.Plain)
         }
 
         authenticate("myBasicAuth") {

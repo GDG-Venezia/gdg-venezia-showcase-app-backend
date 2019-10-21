@@ -1,14 +1,21 @@
 package com.github.gdgvenezia
 
+import com.github.gdgvenezia.meetup.MeetupClient
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.features.json.JacksonSerializer
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.request.get
 import java.time.LocalDateTime
 
-class RepositoryMock : Repository {
+class RepositoryImpl(private val meetupClient: MeetupClient) : Repository {
+
+
     override suspend fun getEvents(): List<EventModel> {
-        return listOf(
-            EventModel(title = "Evento 1", date = LocalDateTime.of(2019, 1, 30, 18, 30)),
-            EventModel(title = "Evento 2", date = LocalDateTime.of(2019, 9, 10, 19, 30)),
-            EventModel(title = "Evento 3", date = LocalDateTime.of(2019, 5, 6, 21, 0))
-        )
+        val future = meetupClient.getFutureEvents()
+        val past = meetupClient.getPastEvents()
+
+        return future.plus(past)
     }
 
     override fun getPhotos(): List<PhotoModel> {
