@@ -1,10 +1,10 @@
 package com.github.gdgvenezia
 
 interface Repository {
-    suspend fun getEvents(): List<EventModel>
+    suspend fun getEvents(): ListResponseModel<EventModel>
     fun getPhotos(): ListResponseModel<PhotoModel>
-    fun getTeam(): List<TeamMemberModel>
-    fun getSocialLinks(): List<SocialLinkModel>
+    fun getTeam(): ListResponseModel<TeamMemberModel>
+    fun getSocialLinks(): ListResponseModel<SocialLinkModel>
 
 }
 
