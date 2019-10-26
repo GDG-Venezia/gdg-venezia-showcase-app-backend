@@ -5,29 +5,29 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.gdgvenezia.EventModel
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
-import java.time.Duration
+import java.util.*
 
 /**
  * API Console: https://secure.meetup.com/meetup_api/console/?path=/:urlname/events
  */
 class MeetupClientImpl(private val httpClient: HttpClient): MeetupClient {
 
-    private val mapper = MeetupResponseMapper()
-
-    override suspend fun getFutureEvents(): List<EventModel> {
+    override suspend fun getFutureEvents(locale: Locale): List<EventModel> {
         val url = "https://api.meetup.com/GDG-Venezia/events?&sign=true&photo-host=public&page=100&status=upcoming"
 
-        return callEventApi(url)
+        return callEventApi(url, locale)
     }
 
-    override suspend fun getPastEvents(): List<EventModel> {
-        val url = "https://api.meetup.com/GDG-Venezia/events?&sign=true&photo-host=public&page=100&status=past"
+    override suspend fun getPastEvents(locale: Locale): List<EventModel> {
+        val url = "https://api.meetup.com/GDG-Venezia/events?&sign=true&photo-host=public&page=100&status=past&desc=true"
 
-        return callEventApi(url)
+        return callEventApi(url, locale)
     }
 
-    private suspend fun callEventApi(url: String): List<EventModel> {
+    private suspend fun callEventApi(url: String, locale: Locale): List<EventModel> {
         val items = httpClient.get<List<MeetupEventItemResponse>>(url)
+
+        val mapper = MeetupResponseMapper(locale)
 
         return items.map { mapper.map(it) }
     }

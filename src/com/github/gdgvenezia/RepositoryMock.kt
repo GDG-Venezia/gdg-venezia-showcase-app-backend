@@ -1,6 +1,6 @@
 package com.github.gdgvenezia
 
-import java.time.LocalDateTime
+import java.util.*
 
 class RepositoryMock : Repository {
     private val socialLinkList by lazy {
@@ -85,7 +85,7 @@ class RepositoryMock : Repository {
         )
     }
 
-    override suspend fun getEvents(): ListResponseModel<EventModel> {
+    override suspend fun getEvents(locale: Locale): ListResponseModel<EventModel> {
         /*
         val items = listOf(
             EventModel(title = "Evento 1", date = LocalDateTime.of(2019, 1, 30, 18, 30)),
@@ -97,11 +97,11 @@ class RepositoryMock : Repository {
         return ListResponseModel(emptyList())
     }
 
-    override suspend fun getFutureEvents(): ListResponseModel<EventModel> {
+    override suspend fun getFutureEvents(locale: Locale): ListResponseModel<EventModel> {
         return ListResponseModel(emptyList())
     }
 
-    override suspend fun getPastEvents(): ListResponseModel<EventModel> {
+    override suspend fun getPastEvents(locale: Locale): ListResponseModel<EventModel> {
         return ListResponseModel(emptyList())
     }
 

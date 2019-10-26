@@ -1,12 +1,7 @@
 package com.github.gdgvenezia
 
 import com.github.gdgvenezia.meetup.MeetupClient
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.features.json.JacksonSerializer
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.request.get
-import java.time.LocalDateTime
+import java.util.*
 
 class RepositoryImpl(private val meetupClient: MeetupClient) : Repository {
 
@@ -92,21 +87,21 @@ class RepositoryImpl(private val meetupClient: MeetupClient) : Repository {
         )
     }
 
-    override suspend fun getEvents(): ListResponseModel<EventModel> {
-        val future = meetupClient.getFutureEvents()
-        val past = meetupClient.getPastEvents()
+    override suspend fun getEvents(locale: Locale): ListResponseModel<EventModel> {
+        val future = meetupClient.getFutureEvents(locale)
+        val past = meetupClient.getPastEvents(locale)
 
         val items = future.plus(past)
 
         return ListResponseModel(items)
     }
 
-    override suspend fun getFutureEvents(): ListResponseModel<EventModel> {
-        return ListResponseModel(meetupClient.getFutureEvents())
+    override suspend fun getFutureEvents(locale: Locale): ListResponseModel<EventModel> {
+        return ListResponseModel(meetupClient.getFutureEvents(locale))
     }
 
-    override suspend fun getPastEvents(): ListResponseModel<EventModel> {
-        return ListResponseModel(meetupClient.getPastEvents())
+    override suspend fun getPastEvents(locale: Locale): ListResponseModel<EventModel> {
+        return ListResponseModel(meetupClient.getPastEvents(locale))
     }
 
     override fun getPhotos(): ListResponseModel<PhotoModel> {

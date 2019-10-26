@@ -1,6 +1,5 @@
 package com.github.gdgvenezia
 
-import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.github.gdgvenezia.meetup.MeetupClientImpl
 import io.ktor.application.*
@@ -16,6 +15,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.features.json.JacksonSerializer
 import io.ktor.client.features.json.JsonFeature
+import java.util.*
+
 //import io.ktor.client.features.auth.basic.*
 
 
@@ -77,15 +78,18 @@ fun Application.module(testing: Boolean = false) {
         }
 
         get("/events") {
-            call.respond(repository.getEvents())
+            val locale = call.request.getAcceptLocale()
+            call.respond(repository.getEvents(locale))
         }
 
         get("/events/future") {
-            call.respond(repository.getFutureEvents())
+            val locale = call.request.getAcceptLocale()
+            call.respond(repository.getFutureEvents(locale))
         }
 
         get("/events/past") {
-            call.respond(repository.getPastEvents())
+            val locale = call.request.getAcceptLocale()
+            call.respond(repository.getPastEvents(locale))
         }
 
         get("/photos") {
@@ -102,4 +106,10 @@ fun Application.module(testing: Boolean = false) {
     }
 }
 
+private fun ApplicationRequest.getAcceptLocale(): Locale {
+    return when (this.acceptLanguage()) {
+        "it" -> Locale.ITALIAN
+        else -> Locale.ENGLISH
+    }
+}
 
