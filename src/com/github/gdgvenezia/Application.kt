@@ -1,5 +1,6 @@
 package com.github.gdgvenezia
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.github.gdgvenezia.meetup.MeetupClientImpl
 import io.ktor.application.*
 import io.ktor.response.*
