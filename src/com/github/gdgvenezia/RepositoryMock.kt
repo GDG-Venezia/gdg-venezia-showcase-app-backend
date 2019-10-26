@@ -86,13 +86,15 @@ class RepositoryMock : Repository {
     }
 
     override suspend fun getEvents(): ListResponseModel<EventModel> {
+        /*
         val items = listOf(
             EventModel(title = "Evento 1", date = LocalDateTime.of(2019, 1, 30, 18, 30)),
             EventModel(title = "Evento 2", date = LocalDateTime.of(2019, 9, 10, 19, 30)),
             EventModel(title = "Evento 3", date = LocalDateTime.of(2019, 5, 6, 21, 0))
         )
+        */
 
-        return ListResponseModel(items)
+        return ListResponseModel(emptyList())
     }
 
     override fun getPhotos(): ListResponseModel<PhotoModel> {

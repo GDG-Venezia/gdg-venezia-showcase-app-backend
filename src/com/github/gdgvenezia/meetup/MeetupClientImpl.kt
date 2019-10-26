@@ -27,9 +27,6 @@ class MeetupClientImpl(private val httpClient: HttpClient): MeetupClient {
     }
 
     private suspend fun callEventApi(url: String): List<EventModel> {
-        val string = httpClient.get<String>(url)
-        println(string)
-
         val items = httpClient.get<List<MeetupEventItemResponse>>(url)
 
         return items.map { mapper.map(it) }
