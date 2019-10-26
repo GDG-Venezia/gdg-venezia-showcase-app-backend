@@ -80,6 +80,14 @@ fun Application.module(testing: Boolean = false) {
             call.respond(repository.getEvents())
         }
 
+        get("/events/future") {
+            call.respond(repository.getFutureEvents())
+        }
+
+        get("/events/past") {
+            call.respond(repository.getPastEvents())
+        }
+
         get("/photos") {
             call.respond(repository.getPhotos())
         }
