@@ -1,6 +1,7 @@
 package com.github.gdgvenezia
 
 import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.github.gdgvenezia.meetup.MeetupClientImpl
 import io.ktor.application.*
 import io.ktor.response.*
@@ -8,6 +9,7 @@ import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.features.*
+import io.ktor.jackson.*
 import org.slf4j.event.*
 import io.ktor.auth.*
 import io.ktor.client.HttpClient
@@ -15,7 +17,6 @@ import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.features.json.JacksonSerializer
 import io.ktor.client.features.json.JsonFeature
 //import io.ktor.client.features.auth.basic.*
-import io.ktor.gson.*
 
 
 /**
@@ -58,11 +59,8 @@ fun Application.module(testing: Boolean = false) {
     }
 
     install(ContentNegotiation) {
-        /*jackson {
+        jackson {
             enable(SerializationFeature.INDENT_OUTPUT) // Pretty Prints the JSON
-        }*/
-        gson {
-            setPrettyPrinting()
         }
     }
 
